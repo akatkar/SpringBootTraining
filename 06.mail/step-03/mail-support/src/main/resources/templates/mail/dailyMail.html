@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <title></title>
+    </head>
+    <body>
+        
+    <span th:text="'Hi ' + ${user.username}"></span>
+            
+        <table class="table table-striped">
+            <tr>
+                <th>Hotel</th>
+                <th>Price</th>
+                <th>Nights</th>
+            </tr>
+            <tr th:each="booking : ${bookings}">
+                <td th:text="${booking.hotelName}">Divan</td>
+                <td th:text="${booking.pricePerNight}">500.00</td>
+                <td th:text="${booking.nbOfNights}">1</td>
+            </tr>
+        </table>        
+
+
+    </body>
+</html>
