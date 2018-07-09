@@ -1,0 +1,38 @@
+node {
+    try{
+        stage 'checkout'
+        // git 'https://github.com/akatkar/SpringBootTraining.git'
+        checkout scm    
+
+        def project_path = "03.data\\database-spring"
+        dir(project_path) {
+            stage 'compiling'
+            bat "mvn clean package"
+
+            
+            stage 'archival'
+            step([$class: 'JUnitResultArchiver',
+                  testResults: '\\target\\surefire-reports\\TEST-*.xml'])
+
+            publishHTML(target:[allowMissing:true,
+                        alwaysLinkToLastBuild:true,
+                        keepAll:true,
+                        reportDir:'target/site/jacoco',
+                        reportFiles:'index.html',
+                        reportName: 'Code coverage'])
+                        
+            archiveArtifacts "target\\*.jar"
+        }
+    }catch(err){
+        notify("Error ${err}")
+    }
+    
+}
+
+def notify(status){
+    emailext(
+        to:"alikatkar@gmail.com",
+        subject:"${status}: Job: ${env.JOB_NAME}",
+        body: "süper"
+    )
+}
